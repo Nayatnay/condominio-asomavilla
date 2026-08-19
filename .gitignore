@@ -1,0 +1,8 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Entornos y dependencias (por si usas Docker/Node/PHP más adelante)
+vendor/
+node_modules/
+.env
