@@ -38,6 +38,22 @@ onAuthStateChanged(auth, async (user) => {
                     profileSpan.textContent = `${userData.casa} (${userData.nombre})`;
                 }
 
+                // 2. NUEVO: Actualiza la insignia superior con los datos de Firebase
+                const userBadge = document.getElementById('userBadge');
+                if (userBadge) {
+                    const estatus = userData.estatusPago || 'pendiente'; // Valor por defecto si no existe
+
+                    if (estatus === 'solvente') {
+                        userBadge.textContent = 'Estado: Solvente';
+                        userBadge.style.backgroundColor = '#d1fae5'; // Verde claro minimalista
+                        userBadge.style.color = '#065f46';          // Texto verde oscuro
+                    } else {
+                        userBadge.textContent = 'Estado: Pendiente';
+                        userBadge.style.backgroundColor = '#fee2e2'; // Rojo claro / Alerta
+                        userBadge.style.color = '#991b1b';          // Texto rojo oscuro
+                    }
+                }
+
                 // Si quisieras validar el rol para restringir acciones:
                 if (userData.rol === 'administrador') {
                     console.log("Usuario con privilegios de administrador");
