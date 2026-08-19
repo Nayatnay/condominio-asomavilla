@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Reserva | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Menú Lateral -->
+    
+    <!-- Contenido Principal -->
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Reservar Espacio</h1>
+                <p>Selecciona el área común, la fecha y el turno de tu preferencia.</p>
+            </div>
+            <div class="badge-status" id="userBadge">
+                Cargando...
+            </div>
+        </header>
+
+        <!-- Formulario de Reserva -->
+        <section class="card incident-card-container">
+            <form id="reservaForm" class="incident-form">
+                <div class="form-group">
+                    <label for="area">Área Común</label>
+                    <select id="area" name="area" required>
+                        <option value="" disabled selected>Selecciona un espacio...</option>
+                        <option value="Salon de Fiestas">Salón de Fiestas / Galpón</option>
+                        <option value="Zona Parrillera">Zona Parrillera / Parque</option>
+                        <option value="Cancha Multiple">Cancha Múltiple</option>                        
+                        <option value="Espacio Boulevard">Espacio Boulevard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha">Fecha del Evento</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="turno">Turno o Horario</label>
+                    <select id="turno" name="turno" required>
+                        <option value="" disabled selected>Selecciona un horario...</option>
+                        <option value="Turno Mañana (9:00 AM - 2:00 PM)">Turno Mañana (9:00 AM - 2:00 PM)</option>
+                        <option value="Turno Tarde (3:00 PM - 9:00 PM)">Turno Tarde (3:00 PM - 9:00 PM)</option>
+                        <option value="Día Completo">Día Completo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="motivo">Motivo o Evento (Opcional)</label>
+                    <input type="text" id="motivo" name="motivo" placeholder="Ej: Cumpleaños familiar, Reunión...">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">Confirmar Reserva</button>
+                    <a href="reservas.html" class="link-cancel">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script type="module" src="nueva-reserva.js"></script>
+</body>
+
+</html>

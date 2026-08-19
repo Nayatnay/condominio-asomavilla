@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos Oficiales | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Menú Lateral -->
+
+    <!-- Contenido Principal -->
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Documentos y Reglamentos</h1>
+                <p>Biblioteca digital con actas, normativas y comunicados oficiales del condominio.</p>
+            </div>
+            <div class="badge-status" id="userBadge">
+                Cargando...
+            </div>
+        </header>
+
+        <!-- Barra de Título -->
+        <div style="margin: 1.5rem 0 1rem 0;">
+            <h3 class="section-title" style="margin: 0;">Archivos Disponibles</h3>
+        </div>
+
+        <!-- Contenedor donde se cargarán dinámicamente los documentos desde Firestore -->
+        <div id="documentosList" style="display: flex; flex-direction: column; gap: 1rem;">
+            <p style="color: var(--text-muted, #666);">Cargando documentos...</p>
+        </div>
+    </main>
+
+    <script type="module" src="documentos.js"></script>
+</body>
+
+</html>

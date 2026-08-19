@@ -1,4 +1,5 @@
 // dashboard.js
+import { renderSidebar } from './components.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -12,10 +13,11 @@ const firebaseConfig = {
     appId: "1:770299926737:web:1df3cd723dc70dc62e4df0"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app); // Inicializamos Firestore
+
+renderSidebar('dashboard', auth);
 
 // Proteger la ruta y cargar los datos del usuario
 onAuthStateChanged(auth, async (user) => {

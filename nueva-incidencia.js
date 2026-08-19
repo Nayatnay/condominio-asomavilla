@@ -1,9 +1,9 @@
-// incidencias.js
+// nueva-incidencia.js
+import { renderSidebar } from './components.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// La misma configuración de Firebase que ya usas
 const firebaseConfig = {
     apiKey: "AIzaSyCMgOYewIjMNYyHF-yy71IbOSdW2hVk07E",
     authDomain: "condominio-asomavilla.firebaseapp.com",
@@ -17,10 +17,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// 1. Renderizamos el menú lateral y activamos 'incidencias'
+renderSidebar('incidencias', auth);
+
 let currentUserData = null;
 let currentUserId = null;
 
-// 1. Verificar sesión y cargar datos del usuario (para el menú lateral e insignia)
+// 2. Validar sesión y cargar datos de usuario (para el badge y perfil)
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
         window.location.href = "index.html";
@@ -33,27 +36,17 @@ onAuthStateChanged(auth, async (user) => {
             if (userDoc.exists()) {
                 currentUserData = userDoc.data();
 
-                // Actualizar menú lateral
+                // Menú lateral (perfil)
                 const profileSpan = document.querySelector('.user-profile span');
-                if (profileSpan) {
-                    profileSpan.textContent = `${currentUserData.casa} (${currentUserData.nombre})`;
-                }
+                if (profileSpan) profileSpan.textContent = `${currentUserData.casa} (${currentUserData.nombre})`;
 
-                // Actualizar badge superior
-                // Actualizar badge superior con el estatus de pago
+                // Badge de estatus
                 const userBadge = document.getElementById('userBadge');
                 if (userBadge) {
                     const estatus = currentUserData.estatusPago || 'pendiente';
-
-                    if (estatus === 'solvente') {
-                        userBadge.textContent = 'Estado: Solvente';
-                        userBadge.style.backgroundColor = '#d1fae5';
-                        userBadge.style.color = '#065f46';
-                    } else {
-                        userBadge.textContent = 'Estado: Pendiente';
-                        userBadge.style.backgroundColor = '#fee2e2';
-                        userBadge.style.color = '#991b1b';
-                    }
+                    userBadge.textContent = estatus === 'solvente' ? 'Estado: Solvente' : 'Estado: Pendiente';
+                    userBadge.style.backgroundColor = estatus === 'solvente' ? '#d1fae5' : '#fee2e2';
+                    userBadge.style.color = estatus === 'solvente' ? '#065f46' : '#991b1b';
                 }
             }
         } catch (error) {
@@ -62,42 +55,38 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// 2. Manejar el envío del formulario de incidencias
-const incidentForm = document.getElementById('incidentForm');
-if (incidentForm) {
-    incidentForm.addEventListener('submit', async (e) => {
+// 3. Manejar el envío del formulario
+const incidenciaForm = document.getElementById('incidenciaForm');
+if (incidenciaForm) {
+    incidenciaForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         if (!currentUserId || !currentUserData) {
-            alert("Error: No se ha identificado al usuario. Por favor, recarga la página.");
+            alert("Error: Usuario no identificado. Recarga la página.");
             return;
         }
 
-        // Capturar los valores del formulario
-        const tipo = document.getElementById('tipo').value;
-        const ubicacion = document.getElementById('ubicacion').value;
+        const titulo = document.getElementById('titulo').value;
+        const categoria = document.getElementById('categoria').value;
         const descripcion = document.getElementById('descripcion').value;
 
-        const submitButton = incidentForm.querySelector('button[type="submit"]');
+        const submitButton = incidenciaForm.querySelector('button[type="submit"]');
         submitButton.textContent = "Enviando...";
         submitButton.disabled = true;
 
         try {
-            // Guardar en la colección "incidencias" de Firestore
             await addDoc(collection(db, "incidencias"), {
                 uid: currentUserId,
                 nombreResidente: currentUserData.nombre,
                 inmueble: currentUserData.casa,
-                tipo: tipo,
-                ubicacion: ubicacion,
+                titulo: titulo,
+                categoria: categoria,
                 descripcion: descripcion,
-                estatus: "pendiente", // estatus inicial del reporte
+                estatus: "pendiente", // pendiente, en proceso, resuelto
                 fechaCreacion: serverTimestamp()
             });
 
-            alert("¡Reporte enviado con éxito! La administración ha sido notificada.");
-
-            // Limpiar formulario o redirigir al dashboard
+            alert("¡Incidencia reportada con éxito!");
             window.location.href = "incidencias.html";
 
         } catch (error) {

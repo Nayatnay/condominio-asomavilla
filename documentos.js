@@ -1,8 +1,8 @@
-// incidencias-list.js
+// documentos.js
 import { renderSidebar } from './components.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCMgOYewIjMNYyHF-yy71IbOSdW2hVk07E",
@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-renderSidebar('incidencias', auth);
+renderSidebar('documentos', auth);
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -31,11 +31,9 @@ onAuthStateChanged(auth, async (user) => {
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 
-                // Menú lateral
                 const profileSpan = document.querySelector('.user-profile span');
                 if (profileSpan) profileSpan.textContent = `${userData.casa} (${userData.nombre})`;
 
-                // Badge de estatus
                 const userBadge = document.getElementById('userBadge');
                 if (userBadge) {
                     const estatus = userData.estatusPago || 'pendiente';
@@ -45,58 +43,44 @@ onAuthStateChanged(auth, async (user) => {
                 }
             }
 
-            // 2. Consultar el historial de incidencias de este usuario específico
-            const incidenciasRef = collection(db, "incidencias");
-            const q = query(incidenciasRef, where("uid", "==", user.uid));
-            const querySnapshot = await getDocs(q);
-
-            const container = document.getElementById('incidenciasList');
-            container.innerHTML = ""; // Limpiar texto de carga
+            // 2. Consultar los documentos en Firestore
+            const querySnapshot = await getDocs(collection(db, "documentos"));
+            const container = document.getElementById('documentosList');
+            container.innerHTML = "";
 
             if (querySnapshot.empty) {
                 container.innerHTML = `
                     <div class="card" style="text-align: center; padding: 2rem;">
-                        <p style="color: var(--text-muted, #666); margin: 0;">No has reportado ninguna incidencia todavía.</p>
+                        <p style="color: var(--text-muted, #666); margin: 0;">No hay documentos publicados en este momento.</p>
                     </div>
                 `;
                 return;
             }
 
-            // Renderizar cada reporte encontrado
+            // Renderizar cada documento
             querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
-                
-                // Formatear fecha si existe
-                let fechaStr = "Fecha reciente";
-                if (data.fechaCreacion && data.fechaCreacion.toDate) {
-                    fechaStr = data.fechaCreacion.toDate().toLocaleDateString('es-ES', {
-                        day: 'numeric', month: 'long', year: 'numeric'
-                    });
-                }
-
-                // Estilos visuales para el estatus de la incidencia
-                const estatusColor = data.estatus === 'resuelto' ? '#065f46' : '#b45309';
-                const estatusBg = data.estatus === 'resuelto' ? '#d1fae5' : '#fef3c7';
-                const estatusTexto = data.estatus ? data.estatus.toUpperCase() : 'PENDIENTE';
 
                 const cardHTML = `
-                    <div class="card" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                    <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
                         <div>
-                            <span style="font-size: 0.85rem; color: var(--text-muted, #666);">${fechaStr}</span>
-                            <h4 style="margin: 0.25rem 0 0.5rem 0; color: var(--text-main, #222); text-transform: capitalize;">${data.tipo} - <span style="font-weight: normal; font-size: 0.95rem;">${data.ubicacion}</span></h4>
-                            <p style="margin: 0; color: var(--text-main, #444); font-size: 0.95rem;">${data.descripcion}</p>
+                            <span style="font-size: 0.8rem; background-color: #e0f2fe; color: #0369a1; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 500;">
+                                ${data.categoria || 'General'}
+                            </span>
+                            <h4 style="margin: 0.4rem 0 0.2rem 0; color: var(--text-main, #222);">${data.titulo}</h4>
+                            <p style="margin: 0; color: var(--text-muted, #666); font-size: 0.9rem;">${data.descripcion || 'Sin descripción'}</p>
                         </div>
-                        <span style="background-color: ${estatusBg}; color: ${estatusColor}; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
-                            ${estatusTexto}
-                        </span>
+                        <a href="${data.urlArchivo}" target="_blank" class="btn" style="text-decoration: none; white-space: nowrap; font-size: 0.9rem; padding: 0.5rem 1rem;">
+                            Ver / Descargar PDF
+                        </a>
                     </div>
                 `;
                 container.innerHTML += cardHTML;
             });
 
         } catch (error) {
-            console.error("Error al cargar las incidencias:", error);
-            document.getElementById('incidenciasList').innerHTML = `<p style="color: #991b1b;">Error al cargar el historial.</p>`;
+            console.error("Error al cargar los documentos:", error);
+            document.getElementById('documentosList').innerHTML = `<p style="color: #991b1b;">Error al cargar la lista de documentos.</p>`;
         }
     }
 });
