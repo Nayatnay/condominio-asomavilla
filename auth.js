@@ -1,7 +1,6 @@
-
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCMgOYewIjMNYyHF-yy71IbOSdW2hVk07E",
@@ -12,31 +11,44 @@ const firebaseConfig = {
     appId: "1:770299926737:web:1df3cd723dc70dc62e4df0"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Inicializamos Firestore
 
-// Lógica del Login (la que ya tenías)
+// Lógica del Login con validación de rol
 const loginForm = document.querySelector('form');
-loginForm.addEventListener('submit', (e) => {
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
+    try {
+        // 1. Iniciamos sesión
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // 2. Consultamos sus datos en Firestore para verificar el rol
+        const userDocRef = doc(db, "usuarios", user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists() && userDoc.data().rol === 'admin') {
+            // Si es administrador, lo mandamos al panel de control de admin
+            window.location.href = "admin-dashboard.html";
+        } else {
+            // Si es un residente normal, lo mandamos al dashboard habitual
             window.location.href = "dashboard.html";
-        })
-        .catch((error) => {
-            alert("Error de acceso: Comprueba tu correo y contraseña.");
-        });
+        }
+
+    } catch (error) {
+        console.error("Error de acceso:", error);
+        alert("Error de acceso: Comprueba tu correo y contraseña.");
+    }
 });
 
-// NUEVO: Lógica de "¿Olvidaste tu contraseña?"
+// Lógica de "¿Olvidaste tu contraseña?"
 document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
     e.preventDefault();
 
-    // Pedimos el correo mediante una ventana emergente del navegador (Prompt)
     const emailPrompt = prompt("Por favor, introduce tu correo electrónico registrado:");
 
     if (emailPrompt) {

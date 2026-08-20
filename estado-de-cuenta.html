@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Cuenta | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Contenido Principal -->
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Estado de Cuenta</h1>
+                <p>Consulta tus cuotas de condominio, saldo deudor y el historial de pagos registrados.</p>
+            </div>
+            <div class="badge-status" id="userBadge">
+                Cargando...
+            </div>
+        </header>
+
+        <!-- Tarjeta de Resumen Financiero -->
+        <section class="card" style="display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0; background: linear-gradient(to right, #f8fafc, #f1f5f9);">
+            <div>
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666);">Saldo Actual a Pagar</span>
+                <h2 id="saldoTotal" style="margin: 0.25rem 0 0 0; font-size: 2rem; color: var(--text-main, #222);">Cargando...</h2>
+            </div>
+            <a href="reportar-pago.html" class="btn">+ Reportar Pago</a>
+        </section>
+
+        <!-- Historial de Cuotas / Movimientos -->
+        <div style="margin: 1.5rem 0 1rem 0;">
+            <h3 class="section-title" style="margin: 0;">Historial de Cuotas y Movimientos</h3>
+        </div>
+
+        <div id="movimientosList" style="display: flex; flex-direction: column; gap: 1rem;">
+            <p style="color: var(--text-muted, #666);">Cargando estado de cuenta...</p>
+        </div>
+    </main>
+
+    <script type="module" src="estado-de-cuenta.js"></script>
+</body>
+
+</html>

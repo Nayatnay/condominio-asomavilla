@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Panel de Administración General</h1>
+                <p>Bienvenida al núcleo de gestión de Asomavilla. Desde aquí controlas el condominio.</p>
+            </div>
+            <div class="badge-status" style="background-color: #fee2e2; color: #991b1b;">
+                Modo Administrador
+            </div>
+        </header>
+
+        <!-- Accesos directos administrativos -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+            
+            <a href="admin-residentes.html" class="card" style="text-decoration: none; color: inherit; display: block; transition: transform 0.2s;">
+                <h3 style="color: #0284c7; margin-top: 0;">Control de Residentes</h3>
+                <p style="color: var(--text-muted, #666); font-size: 0.9rem;">Visualiza los propietarios y actualiza su estatus de pago a solvente o pendiente.</p>
+            </a>
+
+            <a href="admin-pagos.html" class="card" style="text-decoration: none; color: inherit; display: block; transition: transform 0.2s;">
+                <h3 style="color: #0284c7; margin-top: 0;">Validar Pagos</h3>
+                <p style="color: var(--text-muted, #666); font-size: 0.9rem;">Revisa las referencias bancarias reportadas por los vecinos y aprueba las transferencias.</p>
+            </a>
+
+        </div>
+    </main>
+
+    <script type="module" src="admin-dashboard.js"></script>
+</body>
+
+</html>

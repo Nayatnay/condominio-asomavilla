@@ -367,7 +367,27 @@ header {
 }
 
 
+/******************************** COMUNICADOS ******************************************/
 
+/* Estilos para la sección de comunicados */
+.comunicados-section {
+    margin: 2rem 0;
+}
+
+.comunicados-section .section-title {
+    margin-bottom: 1rem;
+}
+
+#comunicadosContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#comunicadosContainer p {
+    color: var(--text-muted, #666);
+    font-size: 0.9rem;
+}
 
 
 

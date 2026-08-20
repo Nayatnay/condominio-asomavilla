@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportar Pago | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Contenido Principal -->
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Reportar Nueva Transferencia</h1>
+                <p>Registra los datos de tu pago para que la administración lo verifique y actualice tu solvencia.</p>
+            </div>
+            <div class="badge-status" id="userBadge">
+                Cargando...
+            </div>
+        </header>
+
+        <!-- Formulario de Pago -->
+        <section class="card incident-card-container">
+            <form id="pagoForm" class="incident-form">
+                <div class="form-group">
+                    <label for="banco">Banco Emisor</label>
+                    <select id="banco" name="banco" required>
+                        <option value="" disabled selected>Selecciona el banco...</option>
+                        <option value="Banco de Venezuela">Banco de Venezuela</option>
+                        $/* Opciones comunes de la banca nacional */$
+                        <option value="Banesco">Banesco</option>
+                        <option value="BBVA Provincial">BBVA Provincial</option>
+                        <option value="Mercantil">Mercantil</option>
+                        <option value="BNC">BNC</option>
+                        <option value="Zelle / Divisas">Zelle / Divisas</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="referencia">Número de Referencia (Últimos 4 o completos)</label>
+                    <input type="text" id="referencia" name="referencia" placeholder="Ej: 123456" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="monto">Monto Pagado ($ o Bs)</label>
+                    <input type="number" step="0.01" id="monto" name="monto" placeholder="Ej: 45.00" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaPago">Fecha del Pago</label>
+                    <input type="date" id="fechaPago" name="fechaPago" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="observacion">Comentarios u Observación (Opcional)</label>
+                    <input type="text" id="observacion" name="observacion" placeholder="Ej: Pago correspondiente al mes de agosto">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">Enviar Reporte de Pago</button>
+                    <a href="estado-de-cuenta.html" class="link-cancel">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script type="module" src="reportar-pago.js"></script>
+</body>
+
+</html>

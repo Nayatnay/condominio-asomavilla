@@ -13,11 +13,14 @@
 <!-- Contenido Principal -->
 <main>
     <header>
+        <!-- Ejemplo dentro del header de tu dashboard.html -->
         <div class="welcome-box">
-            <h1>Panel Residencial</h1>
-            <p>Resumen de actividades y estado de tu inmueble.</p>
+            <h1>Panel Principal</h1>
+            <p>Bienvenido de nuevo a tu espacio residencial.</p>
         </div>
-        <div class="badge-status" id="userBadge">
+        <!-- Aquí es donde probablemente dice "cargando estatus" -->
+        <div id="dashboardStatusBadge"
+            style="background-color: #fef3c7; color: #92400e; padding: 0.4rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
             Cargando estatus...
         </div>
     </header>
@@ -27,7 +30,7 @@
         <div class="card">
             <h3>Pagos y Cuotas</h3>
             <p>Registra tus pagos de condominio o revisa el histórico de recibos emitidos.</p>
-            <a href="#" class="btn">Gestionar Pagos</a>
+            <a href="estado-de-cuenta.html" class="btn">Gestionar Pagos</a>
         </div>
         <div class="card">
             <h3>Áreas Comunes</h3>
@@ -41,18 +44,12 @@
         </div>
     </div>
 
-    <!-- Tablón de Anuncios -->
+    <!-- Sección de Comunicados en el Dashboard -->
     <h3 class="section-title">Últimos Comunicados</h3>
-    <div class="announcement-card">
-        <span class="date">17 de Agosto, 2026</span>
-        <h4>Mantenimiento de bombas de agua</h4>
-        <p>Se realizará una parada programada del servicio de hidroneumático el próximo jueves de 8:00 AM a 12:00 PM.
-        </p>
-    </div>
-    <div class="announcement-card">
-        <span class="date">10 de Agosto, 2026</span>
-        <h4>Asamblea Ordinaria de Copropietarios</h4>
-        <p>Los invitamos a la próxima asamblea anual para discutir el presupuesto de impermeabilización de techos.</p>
+    <div class="comunicados-section">
+        <div id="comunicadosContainer">
+            <p>Cargando comunicados...</p>
+        </div>
     </div>
 </main>
 
