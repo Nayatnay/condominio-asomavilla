@@ -17,30 +17,31 @@
                 <h1>Publicar Comunicado</h1>
                 <p>Envía un aviso oficial que aparecerá de inmediato en el inicio de todos los residentes.</p>
             </div>
-            <div class="badge-status" style="background-color: #fee2e2; color: #991b1b;">
+            <div class="badge-status admin-badge-status">
                 Modo Administrador
             </div>
         </header>
 
         <!-- Formulario para nuevo comunicado -->
-        <div class="card" style="max-width: 600px; margin-top: 1.5rem;">
-            <form id="formComunicado" style="display: flex; flex-direction: column; gap: 1rem;">
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Título del Comunicado</label>
-                    <input type="text" id="tituloComm" required placeholder="Ej. Corte de agua programado" style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px;">
+        <div class="card admin-form-card">
+            <form id="formComunicado" class="admin-form">
+                <div class="form-group">
+                    <label class="form-label">Título del Comunicado</label>
+                    <input type="text" id="tituloComm" required placeholder="Ej. Corte de agua programado" class="form-input">
                 </div>
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Mensaje</label>
-                    <textarea id="mensajeComm" rows="4" required placeholder="Escribe los detalles del aviso aquí..." style="width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; font-family: inherit;"></textarea>
+                <div class="form-group">
+                    <label class="form-label">Mensaje</label>
+                    <textarea id="mensajeComm" rows="4" required placeholder="Escribe los detalles del aviso aquí..." class="form-textarea"></textarea>
                 </div>
-                <button type="submit" class="btn" style="background-color: #0284c7; color: white; padding: 0.75rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Publicar Comunicado</button>
+                <button type="submit" class="btn btn-primary-full">Publicar Comunicado</button>
             </form>
         </div>
+
         <!-- Lista de comunicados existentes para eliminar -->
-        <div style="margin-top: 2.5rem;">
-            <h3 class="section-title" style="margin-bottom: 1rem;">Comunicados Activos</h3>
-            <div id="adminComunicadosList" style="display: flex; flex-direction: column; gap: 1rem; max-width: 800px;">
-                <p style="color: var(--text-muted, #666);">Cargando comunicados...</p>
+        <div class="admin-list-section">
+            <h3 class="section-title admin-list-title">Comunicados Activos</h3>
+            <div id="adminComunicadosList" class="admin-comunicados-container">
+                <p class="loading-text">Cargando comunicados...</p>
             </div>
         </div>
     </main>

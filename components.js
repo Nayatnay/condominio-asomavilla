@@ -1,10 +1,23 @@
-// components.js
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 export function renderSidebar(currentPage, authInstance) {
     const db = getFirestore();
+
+    // 1. Inyectar el botón hamburguesa y el overlay si no existen en el DOM
+    if (!document.getElementById('hamburgerToggle')) {
+        const hamburgerBtn = document.createElement('button');
+        hamburgerBtn.id = 'hamburgerToggle';
+        hamburgerBtn.className = 'hamburger-btn';
+        hamburgerBtn.innerHTML = '☰';
+        document.body.prepend(hamburgerBtn);
+
+        const overlay = document.createElement('div');
+        overlay.id = 'sidebarOverlay';
+        overlay.className = 'sidebar-overlay';
+        document.body.prepend(overlay);
+    }
 
     // Estructura base del menú sin la etiqueta de estatus
     const sidebarHTML = `
@@ -13,7 +26,7 @@ export function renderSidebar(currentPage, authInstance) {
             <div class="logo-area">
                 <h2>Asomavilla</h2>
             </div>
-            <ul class="nav-links">
+            <ul class="nav-links" style="list-style: none; padding: 0;">
                 <li><a href="dashboard.html" class="${currentPage === 'inicio' ? 'active' : ''}">Inicio</a></li>
                 <li><a href="incidencias.html" class="${currentPage === 'incidencias' ? 'active' : ''}">Incidencias</a></li>
                 <li><a href="reservas.html" class="${currentPage === 'reservas' ? 'active' : ''}">Reservas</a></li>
@@ -23,7 +36,7 @@ export function renderSidebar(currentPage, authInstance) {
                 <!-- Aquí se inyectará dinámicamente el botón de admin si corresponde -->
                 <div id="adminButtonContainer"></div>
 
-                <li><a href="#" id="logoutBtn" style="color: #f87171; margin-top: 1.5rem; cursor: pointer;">Cerrar Sesión</a></li>
+                <li><a href="#" id="logoutBtn" style="color: #f87171; margin-top: 1.5rem; cursor: pointer; display: block;">Cerrar Sesión</a></li>
             </ul>
         </div>
         <div class="user-profile">
@@ -35,6 +48,30 @@ export function renderSidebar(currentPage, authInstance) {
 
     // Inyectamos el menú inmediatamente
     document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
+
+    // 2. Configurar la lógica del menú hamburguesa
+    const sidebarElement = document.querySelector('body.dashboard-body > aside');
+    const hamburgerBtn = document.getElementById('hamburgerToggle');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (sidebarElement && hamburgerBtn && overlay) {
+        const toggleMenu = (e) => {
+            e.stopPropagation();
+            sidebarElement.classList.toggle('active');
+            overlay.style.display = sidebarElement.classList.contains('active') ? 'block' : 'none';
+        };
+
+        hamburgerBtn.onclick = toggleMenu;
+        overlay.onclick = toggleMenu;
+
+        // Cerrar el menú automáticamente al hacer clic en cualquier opción del sidebar
+        sidebarElement.querySelectorAll('a, button').forEach(item => {
+            item.addEventListener('click', () => {
+                sidebarElement.classList.remove('active');
+                overlay.style.display = 'none';
+            });
+        });
+    }
 
     // Configurar el botón de cerrar sesión
     const logoutBtn = document.getElementById('logoutBtn');

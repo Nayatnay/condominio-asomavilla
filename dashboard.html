@@ -10,50 +10,53 @@
 </head>
 <!-- Menú Lateral -->
 
-<!-- Contenido Principal -->
-<main>
-    <header>
-        <!-- Ejemplo dentro del header de tu dashboard.html -->
-        <div class="welcome-box">
-            <h1>Panel Principal</h1>
-            <p>Bienvenido de nuevo a tu espacio residencial.</p>
-        </div>
-        <!-- Aquí es donde probablemente dice "cargando estatus" -->
-        <div id="dashboardStatusBadge"
-            style="background-color: #fef3c7; color: #92400e; padding: 0.4rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
-            Cargando estatus...
-        </div>
-    </header>
+<body class="dashboard-body">
+      <!-- Botón Hamburguesa y Overlay para móviles/tablets -->
+    <button id="hamburgerToggle" class="hamburger-btn">☰</button>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <main>
+        <header>
+            <!-- Ejemplo dentro del header de tu dashboard.html -->
+            <div class="welcome-box">
+                <h1>Panel Principal</h1>
+                <p>Bienvenido de nuevo a tu espacio residencial.</p>
+            </div>
+            <!-- Aquí es donde probablemente dice "cargando estatus" -->
+            <div id="dashboardStatusBadge"
+                style="background-color: #fef3c7; color: #92400e; padding: 0.4rem 0.8rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;">
+                Cargando estatus...
+            </div>
+        </header>
 
-    <!-- Accesos Directos -->
-    <div class="dashboard-grid">
-        <div class="card">
-            <h3>Pagos y Cuotas</h3>
-            <p>Registra tus pagos de condominio o revisa el histórico de recibos emitidos.</p>
-            <a href="estado-de-cuenta.html" class="btn">Gestionar Pagos</a>
+        <!-- Accesos Directos -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Pagos y Cuotas</h3>
+                <p>Registra tus pagos de condominio o revisa el histórico de recibos emitidos.</p>
+                <a href="estado-de-cuenta.html" class="btn">Gestionar Pagos</a>
+            </div>
+            <div class="card">
+                <h3>Áreas Comunes</h3>
+                <p>Consulta la disponibilidad y agenda el salón de fiestas o la zona parrillera.</p>
+                <a href="nueva-reserva.html" class="btn">Reservar Espacio</a>
+            </div>
+            <div class="card">
+                <h3>Reportar Incidencia</h3>
+                <p>Notifica fallas de iluminación, áreas verdes o problemas de portón eléctrico.</p>
+                <a href="nueva-incidencia.html" class="btn">Crear Reporte</a>
+            </div>
         </div>
-        <div class="card">
-            <h3>Áreas Comunes</h3>
-            <p>Consulta la disponibilidad y agenda el salón de fiestas o la zona parrillera.</p>
-            <a href="nueva-reserva.html" class="btn">Reservar Espacio</a>
-        </div>
-        <div class="card">
-            <h3>Reportar Incidencia</h3>
-            <p>Notifica fallas de iluminación, áreas verdes o problemas de portón eléctrico.</p>
-            <a href="nueva-incidencia.html" class="btn">Crear Reporte</a>
-        </div>
-    </div>
 
-    <!-- Sección de Comunicados en el Dashboard -->
-    <h3 class="section-title">Últimos Comunicados</h3>
-    <div class="comunicados-section">
-        <div id="comunicadosContainer">
-            <p>Cargando comunicados...</p>
+        <!-- Sección de Comunicados en el Dashboard -->
+        <h3 class="section-title">Últimos Comunicados</h3>
+        <div class="comunicados-section">
+            <div id="comunicadosContainer">
+                <p>Cargando comunicados...</p>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<script type="module" src="dashboard.js"></script>
+    <script type="module" src="dashboard.js"></script>
 
 </body>
 

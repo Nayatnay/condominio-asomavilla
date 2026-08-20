@@ -2,21 +2,35 @@
 import { signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 export function renderAdminSidebar(currentPage, authInstance) {
+    // 1. Inyectar el botón hamburguesa y el overlay si no existen en el DOM
+    if (!document.getElementById('hamburgerToggle')) {
+        const hamburgerBtn = document.createElement('button');
+        hamburgerBtn.id = 'hamburgerToggle';
+        hamburgerBtn.className = 'hamburger-btn';
+        hamburgerBtn.innerHTML = '☰';
+        document.body.prepend(hamburgerBtn);
+
+        const overlay = document.createElement('div');
+        overlay.id = 'sidebarOverlay';
+        overlay.className = 'sidebar-overlay';
+        document.body.prepend(overlay);
+    }
+
     const adminSidebarHTML = `
     <aside>
         <div>
             <div class="logo-area">
                 <h2>Asomavilla <span style="font-size: 0.75rem; background: #fee2e2; color: #991b1b; padding: 0.2rem 0.5rem; border-radius: 4px;">Admin</span></h2>
             </div>
-            <ul class="nav-links">
+            <ul class="nav-links" style="list-style: none; padding: 0;">
                 <li><a href="admin-dashboard.html" class="${currentPage === 'dashboard' ? 'active' : ''}">Resumen Admin</a></li>
                 <li><a href="admin-residentes.html" class="${currentPage === 'residentes' ? 'active' : ''}">Control de Residentes</a></li>
                 <li><a href="admin-pagos.html" class="${currentPage === 'pagos' ? 'active' : ''}">Validar Pagos</a></li>
                 <li><a href="admin-comunicados.html" class="${currentPage === 'comunicados' ? 'active' : ''}">Comunicados</a></li>
                 <li><a href="admin-cuotas.html" class="${currentPage === 'cuotas' ? 'active' : ''}">Gestionar Cuotas</a></li>
-                <li><a href="admin-documentos.html" class="${currentPage === 'documentos' ? 'active' : ''}">Gestión de Documentos</a><li>
-                <li><a href="dashboard.html" style="color: #0284c7; margin-top: 1.5rem;">← Vista Residente</a></li>
-                <li><a href="#" id="logoutBtn" style="color: #f87171; margin-top: 1rem; cursor: pointer;">Cerrar Sesión</a></li>
+                <li><a href="admin-documentos.html" class="${currentPage === 'documentos' ? 'active' : ''}">Gestión de Documentos</a></li>
+                <li><a href="dashboard.html" style="color: #0284c7; margin-top: 1.5rem; display: block;">← Vista Residente</a></li>
+                <li><a href="#" id="logoutBtn" style="color: #f87171; margin-top: 1rem; cursor: pointer; display: block;">Cerrar Sesión</a></li>
             </ul>
         </div>
         <div class="user-profile">
@@ -27,6 +41,30 @@ export function renderAdminSidebar(currentPage, authInstance) {
     `;
 
     document.body.insertAdjacentHTML('afterbegin', adminSidebarHTML);
+
+    // 2. Configurar la lógica del menú hamburguesa para el admin
+    const sidebarElement = document.querySelector('body.dashboard-body > aside');
+    const hamburgerBtn = document.getElementById('hamburgerToggle');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (sidebarElement && hamburgerBtn && overlay) {
+        const toggleMenu = (e) => {
+            e.stopPropagation();
+            sidebarElement.classList.toggle('active');
+            overlay.style.display = sidebarElement.classList.contains('active') ? 'block' : 'none';
+        };
+
+        hamburgerBtn.onclick = toggleMenu;
+        overlay.onclick = toggleMenu;
+
+        // Cerrar el menú automáticamente al hacer clic en cualquier enlace del sidebar
+        sidebarElement.querySelectorAll('a, button').forEach(item => {
+            item.addEventListener('click', () => {
+                sidebarElement.classList.remove('active');
+                overlay.style.display = 'none';
+            });
+        });
+    }
 
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn && authInstance) {

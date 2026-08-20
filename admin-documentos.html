@@ -17,23 +17,22 @@
                 <h1>Gestión de Documentos Oficiales</h1>
                 <p>Publica actas, normativas y comunicados para que los residentes puedan consultarlos.</p>
             </div>
-            <div class="badge-status" style="background-color: #fee2e2; color: #991b1b;">
+            <div class="badge-status admin-badge-status">
                 Modo Administrador
             </div>
         </header>
 
         <!-- Formulario para Publicar Nuevo Documento -->
-        <div class="card" style="margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-main, #222);">Publicar Nuevo Documento</h3>
-            <form id="formNuevoDocumento" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: flex-end;">
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Título del Documento</label>
-                    <input type="text" id="docTitulo" placeholder="Ej. Reglamento Interno 2026" required
-                        style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+        <div class="card admin-doc-form-card">
+            <h3 class="admin-doc-form-title">Publicar Nuevo Documento</h3>
+            <form id="formNuevoDocumento" class="admin-doc-grid-form">
+                <div class="form-group">
+                    <label class="form-label">Título del Documento</label>
+                    <input type="text" id="docTitulo" placeholder="Ej. Reglamento Interno 2026" required class="form-input">
                 </div>
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Categoría</label>
-                    <select id="docCategoria" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; background: #fff;">
+                <div class="form-group">
+                    <label class="form-label">Categoría</label>
+                    <select id="docCategoria" class="form-select">
                         <option value="Reglamento">Reglamento</option>
                         <option value="Acta">Acta de Asamblea</option>
                         <option value="Comunicado">Comunicado Oficial</option>
@@ -41,31 +40,29 @@
                         <option value="General">General</option>
                     </select>
                 </div>
-                <div style="grid-column: 1 / -1;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Descripción Breve</label>
-                    <input type="text" id="docDescripcion" placeholder="Ej. Normativa aprobada en la última asamblea de copropietarios." required
-                        style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group full-width">
+                    <label class="form-label">Descripción Breve</label>
+                    <input type="text" id="docDescripcion" placeholder="Ej. Normativa aprobada en la última asamblea de copropietarios." required class="form-input">
                 </div>
-                <div style="grid-column: 1 / -1;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Enlace del Archivo (URL de PDF / Google Drive / Firebase)</label>
-                    <input type="url" id="docUrl" placeholder="https://ejemplo.com/archivo.pdf" required
-                        style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group full-width">
+                    <label class="form-label">Enlace del Archivo (URL de PDF / Google Drive / Firebase)</label>
+                    <input type="url" id="docUrl" placeholder="https://ejemplo.com/archivo.pdf" required class="form-input">
                 </div>
-                <div>
-                    <button type="submit" style="background-color: #0284c7; color: white; border: none; padding: 0.55rem 1rem; border-radius: 4px; font-weight: 600; cursor: pointer; width: 100%;">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary-full">
                         Publicar Documento
                     </button>
                 </div>
             </form>
         </div>
 
-        <div style="margin: 1.5rem 0 1rem 0;">
-            <h3 class="section-title" style="margin: 0;">Documentos Publicados Actualmente</h3>
+        <div class="section-header-bar">
+            <h3 class="section-title">Documentos Publicados Actualmente</h3>
         </div>
 
         <!-- Contenedor de la lista de documentos publicados -->
-        <div id="adminDocumentosList" style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="color: var(--text-muted, #666);">Cargando documentos...</p>
+        <div id="adminDocumentosList" class="admin-docs-container">
+            <p class="loading-text">Cargando documentos...</p>
         </div>
     </main>
 

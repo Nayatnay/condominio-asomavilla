@@ -17,51 +17,56 @@
                 <h1>Gestión de Cuotas y Cobros</h1>
                 <p>Emite cuotas de mantenimiento y revisa los cargos asignados a los inmuebles.</p>
             </div>
-            <div class="badge-status" style="background-color: #fee2e2; color: #991b1b;">
+            <div class="badge-status admin-badge-status">
                 Modo Administrador
             </div>
         </header>
 
         <!-- Formulario para Registrar / Generar Cuota -->
-        <div class="card" style="margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-main, #222);">Emitir Nueva Cuota</h3>
-            <form id="formNuevaCuota" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; align-items: flex-end;">
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Concepto de la Cuota</label>
-                    <input type="text" id="cuotaConcepto" placeholder="Ej. Mantenimiento Agosto 2026" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+        <div class="card cuota-form-card">
+            <h3 class="cuota-form-title">Emitir Nueva Cuota</h3>
+            <form id="formNuevaCuota" class="cuota-grid-form">
+                <div class="form-group">
+                    <label class="form-label">Concepto de la Cuota</label>
+                    <input type="text" id="cuotaConcepto" placeholder="Ej. Mantenimiento Agosto 2026" required class="form-input">
                 </div>
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Monto ($)</label>
-                    <input type="number" step="0.01" id="cuotaMonto" placeholder="Ej. 30.00" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+                <div class="form-group">
+                    <label class="form-label">Monto ($)</label>
+                    <input type="number" step="0.01" id="cuotaMonto" placeholder="Ej. 30.00" required class="form-input">
                 </div>
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Período / Mes</label>
-                    <input type="month" id="cuotaMes" required style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" value="2026-08">
+                <div class="form-group">
+                    <label class="form-label">Período / Mes</label>
+                    <input type="month" id="cuotaMes" required class="form-input" value="2026-08">
                 </div>
-                <div>
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">Destinatario</label>
-                    <select id="cuotaDestino" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; background: #fff;">
+                <div class="form-group">
+                    <label class="form-label">Destinatario</label>
+                    <select id="cuotaDestino" class="form-select">
                         <option value="todas">Todas las casas (General)</option>
-                        <!-- Aquí podemos poblar dinámicamente con casas específicas si se requiere -->
                     </select>
                 </div>
-                <div>
-                    <button type="submit" style="background-color: #0284c7; color: white; border: none; padding: 0.55rem 1rem; border-radius: 4px; font-weight: 600; cursor: pointer; width: 100%;">Emitir Cuota</button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary-full">Emitir Cuota</button>
                 </div>
             </form>
         </div>
 
-        <div style="margin: 1.5rem 0 1rem 0;">
-            <h3 class="section-title" style="margin: 0;">Historial de Cuotas Emitidas</h3>
+        <div class="section-header-bar">
+            <h3 class="section-title">Historial de Cuotas Emitidas</h3>
+        </div>
+
+        <!-- Filtros y botón de borrado masivo -->
+        <div class="filter-actions-bar">
+            <input type="text" id="filtroTexto" placeholder="Filtrar por casa, concepto o mes..." class="filter-input">
+            <button id="btnEliminarFiltrados" class="btn btn-danger-subtle">Eliminar filtrados visibles</button>
         </div>
 
         <!-- Contenedor del listado de cuotas -->
-        <div id="cuotasList" style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="color: var(--text-muted, #666);">Cargando cuotas...</p>
+        <div id="cuotasList" class="cuotas-container">
+            <p class="loading-text">Cargando cuotas...</p>
         </div>
+        
     </main>
 
-    <!-- Enlazamos tu archivo de componentes de admin y el nuevo script de cuotas -->
     <script type="module" src="admin-cuotas.js"></script>
 </body>
 

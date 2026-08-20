@@ -11,8 +11,6 @@
 
 <body class="dashboard-body">
 
-    <!-- Menú Lateral -->
-    
     <!-- Contenido Principal -->
     <main>
         <header>
@@ -26,14 +24,14 @@
         </header>
 
         <!-- Barra de Acciones -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0;">
-            <h3 class="section-title" style="margin: 0;">Mis Reservas</h3>
+        <div class="actions-bar">
+            <h3 class="section-title">Mis Reservas</h3>
             <a href="nueva-reserva.html" class="btn">+ Nueva Reserva</a>
         </div>
 
         <!-- Contenedor donde se cargarán dinámicamente las reservas -->
-        <div id="reservasList" style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="color: var(--text-muted, #666);">Cargando tus reservas...</p>
+        <div id="reservasList" class="reservas-container">
+            <p class="loading-text">Cargando tus reservas...</p>
         </div>
     </main>
 

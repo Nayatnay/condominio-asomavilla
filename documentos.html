@@ -11,8 +11,6 @@
 
 <body class="dashboard-body">
 
-    <!-- Menú Lateral -->
-
     <!-- Contenido Principal -->
     <main>
         <header>
@@ -26,13 +24,13 @@
         </header>
 
         <!-- Barra de Título -->
-        <div style="margin: 1.5rem 0 1rem 0;">
-            <h3 class="section-title" style="margin: 0;">Archivos Disponibles</h3>
+        <div class="section-header-bar">
+            <h3 class="section-title">Archivos Disponibles</h3>
         </div>
 
         <!-- Contenedor donde se cargarán dinámicamente los documentos desde Firestore -->
-        <div id="documentosList" style="display: flex; flex-direction: column; gap: 1rem;">
-            <p style="color: var(--text-muted, #666);">Cargando documentos...</p>
+        <div id="documentosList" class="documentos-container">
+            <p class="loading-text">Cargando documentos...</p>
         </div>
     </main>
 
