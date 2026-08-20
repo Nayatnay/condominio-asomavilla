@@ -2,7 +2,7 @@
 import { renderSidebar } from './components.js';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, getDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCMgOYewIjMNYyHF-yy71IbOSdW2hVk07E",
@@ -19,8 +19,40 @@ const db = getFirestore(app);
 
 let currentUserData = null;
 let currentUserId = null;
+let esSolventeReal = false;
 
 renderSidebar('reservas', auth);
+
+// Función contable automática para calcular el estatus real del residente
+async function calcularEstatusRealResidente(db, userId, casaInmueble) {
+    try {
+        const cuotasSnapshot = await getDocs(query(collection(db, "cuotas"), where("casa", "==", casaInmueble)));
+        let deudaTotal = 0;
+        cuotasSnapshot.forEach(d => deudaTotal += Number(d.data().monto || 0));
+
+        const pagosRef = collection(db, "pagos");
+        const pagosSnapshot1 = await getDocs(query(pagosRef, where("userId", "==", userId)));
+        const pagosSnapshot2 = await getDocs(query(pagosRef, where("uid", "==", userId)));
+        
+        const pagosMap = new Map();
+        pagosSnapshot1.forEach(d => pagosMap.set(d.id, d.data()));
+        pagosSnapshot2.forEach(d => pagosMap.set(d.id, d.data()));
+
+        let pagosTotales = 0;
+        pagosMap.forEach(pago => {
+            const estatus = pago.estatus ? pago.estatus.toString().toLowerCase() : '';
+            if (estatus === 'aprobado') {
+                pagosTotales += Number(pago.monto || 0);
+            }
+        });
+
+        const balance = deudaTotal - pagosTotales;
+        return balance <= 0 ? 'solvente' : 'pendiente';
+    } catch (error) {
+        console.error("Error al calcular estatus real:", error);
+        return 'pendiente';
+    }
+}
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -38,13 +70,16 @@ onAuthStateChanged(auth, async (user) => {
                 const profileSpan = document.querySelector('.user-profile span');
                 if (profileSpan) profileSpan.textContent = `${currentUserData.casa} (${currentUserData.nombre})`;
 
+                // CÁLCULO REAL AUTOMÁTICO
+                const estatusVal = await calcularEstatusRealResidente(db, user.uid, currentUserData.casa);
+                esSolventeReal = estatusVal.toLowerCase() === 'solvente';
+
                 // Badge de estatus
                 const userBadge = document.getElementById('userBadge');
                 if (userBadge) {
-                    const estatus = currentUserData.estatusPago || 'pendiente';
-                    userBadge.textContent = estatus === 'solvente' ? 'Estado: Solvente' : 'Estado: Pendiente';
-                    userBadge.style.backgroundColor = estatus === 'solvente' ? '#d1fae5' : '#fee2e2';
-                    userBadge.style.color = estatus === 'solvente' ? '#065f46' : '#991b1b';
+                    userBadge.textContent = esSolventeReal ? 'Estado: Solvente' : 'Estado: Pendiente';
+                    userBadge.style.backgroundColor = esSolventeReal ? '#d1fae5' : '#fee2e2';
+                    userBadge.style.color = esSolventeReal ? '#065f46' : '#991b1b';
                 }
             }
         } catch (error) {
@@ -68,8 +103,8 @@ if (reservaForm) {
         const turno = document.getElementById('turno').value;
         const motivo = document.getElementById('motivo').value || "Reunión familiar";
 
-        // Validación extra: Verificar si el usuario está solvente antes de reservar (Regla típica de condominio)
-        if (currentUserData.estatusPago !== 'solvente') {
+        // Validación basada en el cálculo real de solvencia
+        if (!esSolventeReal) {
             alert("Atención: Para reservar áreas comunes debes encontrarte en estatus Solvente.");
             return;
         }
@@ -87,7 +122,7 @@ if (reservaForm) {
                 fecha: fecha,
                 turno: turno,
                 motivo: motivo,
-                estatus: "confirmada", // o "pendiente" si el administrador debe aprobarla
+                estatus: "confirmada",
                 fechaCreacion: serverTimestamp()
             });
 

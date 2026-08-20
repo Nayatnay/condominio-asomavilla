@@ -12,7 +12,9 @@ export function renderAdminSidebar(currentPage, authInstance) {
                 <li><a href="admin-dashboard.html" class="${currentPage === 'dashboard' ? 'active' : ''}">Resumen Admin</a></li>
                 <li><a href="admin-residentes.html" class="${currentPage === 'residentes' ? 'active' : ''}">Control de Residentes</a></li>
                 <li><a href="admin-pagos.html" class="${currentPage === 'pagos' ? 'active' : ''}">Validar Pagos</a></li>
-                <li><a href="admin-comunicados.html" class="${currentPage === 'comunicados' ? 'active' : ''}">Gestionar Comunicados</a></li>
+                <li><a href="admin-comunicados.html" class="${currentPage === 'comunicados' ? 'active' : ''}">Comunicados</a></li>
+                <li><a href="admin-cuotas.html" class="${currentPage === 'cuotas' ? 'active' : ''}">Gestionar Cuotas</a></li>
+                <li><a href="admin-documentos.html" class="${currentPage === 'documentos' ? 'active' : ''}">Gestión de Documentos</a><li>
                 <li><a href="dashboard.html" style="color: #0284c7; margin-top: 1.5rem;">← Vista Residente</a></li>
                 <li><a href="#" id="logoutBtn" style="color: #f87171; margin-top: 1rem; cursor: pointer;">Cerrar Sesión</a></li>
             </ul>
@@ -23,7 +25,7 @@ export function renderAdminSidebar(currentPage, authInstance) {
         </div>
     </aside>
     `;
-    
+
     document.body.insertAdjacentHTML('afterbegin', adminSidebarHTML);
 
     const logoutBtn = document.getElementById('logoutBtn');

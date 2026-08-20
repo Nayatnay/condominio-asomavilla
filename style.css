@@ -389,11 +389,6 @@ header {
     font-size: 0.9rem;
 }
 
-
-
-
-/*********************************** RESPONSIVE **************************************/
-
 /* =========================================
    Diseño Responsivo (Dispositivos Móviles)
    ========================================= */
@@ -428,5 +423,46 @@ header {
     /* Las tarjetas de acceso rápido se adaptan a una sola columna */
     .dashboard-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   Estilos de Impresion
+   ========================================= */
+
+@media print {
+    /* Ocultamos todo lo que no sea el contenido principal o la lista de residentes */
+    aside, 
+    nav, 
+    .btn, 
+    button, 
+    .card:first-child { 
+        display: none !important; 
+    }
+
+    /* Ajustamos el cuerpo para la impresión */
+    body {
+        background-color: white !important;
+        color: black !important;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Creamos un encabezado automático solo para el papel / PDF */
+    body::before {
+        content: "Condominio Asomavilla - Listado Oficial de Morosos / Cuentas Pendientes";
+        display: block;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Aseguramos que las tarjetas de los morosos se impriman limpias */
+    #residentesList .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        margin-bottom: 0.8rem !important;
+        page-break-inside: avoid;
     }
 }

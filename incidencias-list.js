@@ -19,6 +19,37 @@ const db = getFirestore(app);
 
 renderSidebar('incidencias', auth);
 
+// Función contable automática para calcular el estatus real del residente
+async function calcularEstatusRealResidente(db, userId, casaInmueble) {
+    try {
+        const cuotasSnapshot = await getDocs(query(collection(db, "cuotas"), where("casa", "==", casaInmueble)));
+        let deudaTotal = 0;
+        cuotasSnapshot.forEach(d => deudaTotal += Number(d.data().monto || 0));
+
+        const pagosRef = collection(db, "pagos");
+        const pagosSnapshot1 = await getDocs(query(pagosRef, where("userId", "==", userId)));
+        const pagosSnapshot2 = await getDocs(query(pagosRef, where("uid", "==", userId)));
+        
+        const pagosMap = new Map();
+        pagosSnapshot1.forEach(d => pagosMap.set(d.id, d.data()));
+        pagosSnapshot2.forEach(d => pagosMap.set(d.id, d.data()));
+
+        let pagosTotales = 0;
+        pagosMap.forEach(pago => {
+            const estatus = pago.estatus ? pago.estatus.toString().toLowerCase() : '';
+            if (estatus === 'aprobado') {
+                pagosTotales += Number(pago.monto || 0);
+            }
+        });
+
+        const balance = deudaTotal - pagosTotales;
+        return balance <= 0 ? 'solvente' : 'pendiente';
+    } catch (error) {
+        console.error("Error al calcular estatus real:", error);
+        return 'pendiente';
+    }
+}
+
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
         window.location.href = "index.html";
@@ -28,6 +59,8 @@ onAuthStateChanged(auth, async (user) => {
             const userDocRef = doc(db, "usuarios", user.uid);
             const userDoc = await getDoc(userDocRef);
 
+            let estatusVal = 'pendiente';
+
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 
@@ -35,13 +68,16 @@ onAuthStateChanged(auth, async (user) => {
                 const profileSpan = document.querySelector('.user-profile span');
                 if (profileSpan) profileSpan.textContent = `${userData.casa} (${userData.nombre})`;
 
+                // CÁLCULO REAL AUTOMÁTICO (Cruzando cuotas y pagos)
+                estatusVal = await calcularEstatusRealResidente(db, user.uid, userData.casa);
+
                 // Badge de estatus
                 const userBadge = document.getElementById('userBadge');
                 if (userBadge) {
-                    const estatus = userData.estatusPago || 'pendiente';
-                    userBadge.textContent = estatus === 'solvente' ? 'Estado: Solvente' : 'Estado: Pendiente';
-                    userBadge.style.backgroundColor = estatus === 'solvente' ? '#d1fae5' : '#fee2e2';
-                    userBadge.style.color = estatus === 'solvente' ? '#065f46' : '#991b1b';
+                    const esSolvente = estatusVal.toLowerCase() === 'solvente';
+                    userBadge.textContent = esSolvente ? 'Estado: Solvente' : 'Estado: Pendiente';
+                    userBadge.style.backgroundColor = esSolvente ? '#d1fae5' : '#fee2e2';
+                    userBadge.style.color = esSolvente ? '#065f46' : '#991b1b';
                 }
             }
 
@@ -66,7 +102,6 @@ onAuthStateChanged(auth, async (user) => {
             querySnapshot.forEach((docSnap) => {
                 const data = docSnap.data();
                 
-                // Formatear fecha si existe
                 let fechaStr = "Fecha reciente";
                 if (data.fechaCreacion && data.fechaCreacion.toDate) {
                     fechaStr = data.fechaCreacion.toDate().toLocaleDateString('es-ES', {
@@ -74,7 +109,6 @@ onAuthStateChanged(auth, async (user) => {
                     });
                 }
 
-                // Estilos visuales para el estatus de la incidencia
                 const estatusColor = data.estatus === 'resuelto' ? '#065f46' : '#b45309';
                 const estatusBg = data.estatus === 'resuelto' ? '#d1fae5' : '#fef3c7';
                 const estatusTexto = data.estatus ? data.estatus.toUpperCase() : 'PENDIENTE';
