@@ -4,40 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión | ASOMAVILLA</title>
+    <title>Bienvenido | ASOMAVILLA</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="login-body">
-    <div class="login-card">
-        <div class="login-header">
-            <h2>Asomavilla</h2>
-            <p>Ingresa a tu cuenta para gestionar tu condominio</p>
-        </div>
 
-        <!-- Formulario de Acceso -->
-        <form action="dashboard.html" method="GET">
-            <div class="form-group">
-                <label for="email">Correo electrónico o Usuario</label>
-                <input type="text" id="email" placeholder="ejemplo@correo.com" required>
+    <div class="login-wrapper">
+
+        <!-- Sección de Bienvenida (La cara de Asomavilla) -->
+        <header class="hero-section">
+            <img src="logo.png" alt="Logo Asomavilla" class="hero-logo">
+            <h1>Asomavilla</h1>
+            <p>Tu hogar gestionado con transparencia y excelencia</p>
+        </header>
+
+        <div class="login-card">
+            <div class="login-header">
+                <h3>Acceso al Sistema</h3>
+                <p>Ingresa tus credenciales para continuar</p>
             </div>
 
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+            <!-- Formulario de Acceso -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="text" id="email" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-block">Iniciar Sesión</button>
+            </form>
+
+            <div class="login-footer">
+                <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+                <br>
+                <a href="contacto.html" class="contact-link">Contacto para nuevos residentes</a>
             </div>
-
-            <button type="submit" class="btn btn-block">Iniciar Sesión</button>
-        </form>
-
-        <div class="login-footer">
-            <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
-            <br>
-            <a href="contacto.html" class="contact-link">Contacto para nuevos residentes</a>
         </div>
     </div>
     <script type="module" src="auth.js"></script>
 </body>
+
 </html>

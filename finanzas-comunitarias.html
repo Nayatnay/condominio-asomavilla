@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanzas Comunitarias | Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- Contenido Principal -->
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Finanzas Comunitarias</h1>
+                <p>Transparencia y rendición de cuentas sobre los fondos y la gestión económica de nuestra urbanización.</p>
+            </div>
+            <div class="badge-status" id="userBadge">
+                Cargando...
+            </div>
+        </header>
+
+        <!-- Selector de Período -->
+        <div class="card" style="margin: 1.5rem 0; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <label style="font-weight: 600; font-size: 0.9rem;">Consultar Período:</label>
+                <input type="month" id="filtroMesComunitario" class="form-input" style="width: auto; padding: 0.4rem 0.6rem;" value="2026-08">
+                <button id="btnFiltrarComunitario" class="btn" style="background: #0284c7; color: white; padding: 0.4rem 1rem; font-size: 0.9rem;">Actualizar</button>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Resumen General (KPIs Comunitarios) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-bottom: 2rem;">
+            
+            <div class="card" style="border-left: 4px solid #10b981; padding: 1.2rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Total Recaudado en el Fondo Común</span>
+                <h3 id="kpiIngresosComunidad" style="margin: 0; font-size: 1.6rem; color: #065f46;">$0.00</h3>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #f59e0b; padding: 1.2rem; background: linear-gradient(to right, #fffbeb, #fff);">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Eficacia de Cobranza de la Comunidad</span>
+                <h3 id="kpiEficaciaComunidad" style="margin: 0; font-size: 1.6rem; color: #92400e;">0%</h3>
+            </div>
+
+        </div>
+
+        <!-- Sección de Distribución de Inversión / Gastos -->
+        <div class="section-header-bar">
+            <h3 class="section-title">¿En qué se invierten los recursos? (Distribución de Gastos)</h3>
+        </div>
+        <div class="card" style="margin-bottom: 2rem; padding: 1.2rem;">
+            <p style="font-size: 0.9rem; color: var(--text-muted, #666); margin-top: 0; margin-bottom: 1rem;">
+                Relación porcentual y monto global destinado a los diferentes rubros de mantenimiento de Asomavilla.
+            </p>
+            <div id="desgloseComunitarioList" style="display: flex; flex-direction: column; gap: 0.6rem;">
+                <p class="loading-text">Cargando distribución de fondos...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="finanzas-comunitarias.js"></script>
+</body>
+
+</html>

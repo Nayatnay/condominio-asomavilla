@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Financiero | Admin Asomavilla</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <main>
+        <header>
+            <div class="welcome-box">
+                <h1>Informe Financiero y Balance</h1>
+                <p>Resumen consolidado de ingresos, recaudación, morosidad acumulada y salud financiera de la comunidad.</p>
+            </div>
+            <div class="badge-status admin-badge-status">
+                Modo Administrador
+            </div>
+        </header>
+
+        <!-- Barra de Acciones y Filtros -->
+        <div class="card" style="margin: 1.5rem 0; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                <label style="font-weight: 600; font-size: 0.9rem;">Filtrar por Mes / Período:</label>
+                <input type="month" id="filtroMesFinanzas" class="form-input" style="width: auto; padding: 0.4rem 0.6rem;" value="2026-08">
+                <button id="btnFiltrarMes" class="btn" style="background: #0284c7; color: white; padding: 0.4rem 1rem; font-size: 0.9rem;">Aplicar Filtro</button>
+            </div>
+            <button id="btnDescargarReportePDF" class="btn btn-pdf" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                📥 Descargar Reporte PDF
+            </button>
+        </div>
+
+        <!-- Tarjetas de Resumen Financiero (KPIs) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2rem;">
+            
+            <div class="card" style="border-left: 4px solid #0284c7; padding: 1.2rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Total Emitido (Cargos)</span>
+                <h3 id="kpiEmitido" style="margin: 0; font-size: 1.6rem; color: var(--text-main, #222);">$0.00</h3>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #10b981; padding: 1.2rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Ingresos Reales (Cobrado)</span>
+                <h3 id="kpiIngresos" style="margin: 0; font-size: 1.6rem; color: #065f46;">$0.00</h3>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #ef4444; padding: 1.2rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Morosidad Acumulada</span>
+                <h3 id="kpiMorosidad" style="margin: 0; font-size: 1.6rem; color: #991b1b;">$0.00</h3>
+            </div>
+
+            <div class="card" style="border-left: 4px solid #f59e0b; padding: 1.2rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted, #666); display: block; margin-bottom: 0.3rem;">Eficacia de Cobranza</span>
+                <h3 id="kpiEficacia" style="margin: 0; font-size: 1.6rem; color: #92400e;">0%</h3>
+            </div>
+
+        </div>
+
+        <!-- Sección de Distribución de Egresos / Gastos (Desglose) -->
+        <div class="section-header-bar">
+            <h3 class="section-title">Distribución Teórica de Gastos (Relación de Cuotas Emitidas)</h3>
+        </div>
+        <div class="card" style="margin-bottom: 2rem; padding: 1.2rem;">
+            <div id="desgloseGastosList" style="display: flex; flex-direction: column; gap: 0.6rem;">
+                <p class="loading-text">Calculando distribución de gastos...</p>
+            </div>
+        </div>
+
+        <!-- Sección de Estado por Inmueble -->
+        <div class="section-header-bar">
+            <h3 class="section-title">Balance Detallado por Inmueble</h3>
+        </div>
+        <div id="balanceInmueblesList" style="display: flex; flex-direction: column; gap: 1rem;">
+            <p class="loading-text">Cargando balance de inmuebles...</p>
+        </div>
+    </main>
+
+    <!-- Librerías jsPDF para exportar el reporte -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script type="module" src="admin-finanzas.js"></script>
+</body>
+
+</html>

@@ -32,7 +32,7 @@ export function renderSidebar(currentPage, authInstance) {
                 <li><a href="reservas.html" class="${currentPage === 'reservas' ? 'active' : ''}">Reservas</a></li>
                 <li><a href="documentos.html" class="${currentPage === 'documentos' ? 'active' : ''}">Documentos</a></li>
                 <li><a href="estado-de-cuenta.html" class="${currentPage === 'estado' ? 'active' : ''}">Estado de Cuenta</a></li>
-                
+                <li><a href="finanzas-comunitarias.html" class="${currentPage === 'finanzas' ? 'active' : ''}">Finanzas Comunitarias</a></li>                
                 <!-- Aquí se inyectará dinámicamente el botón de admin si corresponde -->
                 <div id="adminButtonContainer"></div>
 
@@ -91,7 +91,7 @@ export function renderSidebar(currentPage, authInstance) {
                 try {
                     const userDocRef = doc(db, "usuarios", user.uid);
                     const userDoc = await getDoc(userDocRef);
-                    
+
                     if (userDoc.exists()) {
                         const userData = userDoc.data();
 

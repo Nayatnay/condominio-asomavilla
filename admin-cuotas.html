@@ -15,24 +15,22 @@
         <header>
             <div class="welcome-box">
                 <h1>Gestión de Cuotas y Cobros</h1>
-                <p>Emite cuotas de mantenimiento y revisa los cargos asignados a los inmuebles.</p>
+                <p>Emite cuotas de mantenimiento desglosadas y revisa los cargos asignados a los inmuebles.</p>
             </div>
             <div class="badge-status admin-badge-status">
                 Modo Administrador
             </div>
         </header>
 
-        <!-- Formulario para Registrar / Generar Cuota -->
+        <!-- Formulario para Registrar / Generar Cuota Desglosada -->
         <div class="card cuota-form-card">
-            <h3 class="cuota-form-title">Emitir Nueva Cuota</h3>
+            <h3 class="cuota-form-title">Emitir Nueva Cuota Desglosada</h3>
             <form id="formNuevaCuota" class="cuota-grid-form">
+                
+                <!-- Datos Generales -->
                 <div class="form-group">
-                    <label class="form-label">Concepto de la Cuota</label>
-                    <input type="text" id="cuotaConcepto" placeholder="Ej. Mantenimiento Agosto 2026" required class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Monto ($)</label>
-                    <input type="number" step="0.01" id="cuotaMonto" placeholder="Ej. 30.00" required class="form-input">
+                    <label class="form-label">Concepto General</label>
+                    <input type="text" id="cuotaConcepto" placeholder="Ej. Mantenimiento Mes" required class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Período / Mes</label>
@@ -44,9 +42,30 @@
                         <option value="todas">Todas las casas (General)</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary-full">Emitir Cuota</button>
+
+                <!-- Sección de Desglose de Gastos -->
+                <div class="form-group full-width" style="border-top: 1px solid #e2e8f0; padding-top: 1rem; margin-top: 0.5rem;">
+                    <label class="form-label" style="font-size: 0.95rem; color: #0284c7; margin-bottom: 0.5rem;">Desglose de Gastos (Relación de Gastos)</label>
+                    
+                    <div id="gastosContainer" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <!-- Aquí se inyectarán las filas de gastos dinámicamente -->
+                    </div>
+
+                    <button type="button" id="btnAddGasto" class="btn" style="background: #f1f5f9; color: #0f172a; border: 1px dashed #cbd5e1; font-size: 0.85rem; padding: 0.4rem 0.8rem; cursor: pointer;">
+                        + Agregar Ítem de Gasto
+                    </button>
                 </div>
+
+                <!-- Resumen de Monto y Botón Final -->
+                <div class="form-group full-width" style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 1rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <div>
+                        <span style="font-size: 0.85rem; color: var(--text-muted, #666);">Monto Total Calculado:</span>
+                        <h3 id="lblMontoTotal" style="margin: 0; color: var(--text-main, #222);">$0.00</h3>
+                        <input type="hidden" id="cuotaMonto" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary-full" style="width: auto; padding: 0.6rem 1.5rem;">Emitir Cuota</button>
+                </div>
+
             </form>
         </div>
 

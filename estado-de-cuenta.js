@@ -49,13 +49,14 @@ onAuthStateChanged(auth, async (user) => {
                 const cuota = docSnap.data();
                 deudaTotal += Number(cuota.monto || 0);
                 
-                // Agregamos la cuota al array de movimientos
+                // Agregamos la cuota al array de movimientos incluyendo el desglose si existe
                 listaMovimientos.push({
                     tipo: 'Cargo (Deuda)',
                     fecha: cuota.mes ? `Período: ${cuota.mes}` : 'Cargo de Cuota',
                     titulo: cuota.concepto,
                     detalle: cuota.concepto || `Cargo por mantenimiento`,
                     monto: Number(cuota.monto || 0),
+                    desglose: cuota.desglose || null, // Capturamos el desglose de gastos
                     esDeuda: true
                 });
             });
@@ -109,7 +110,6 @@ onAuthStateChanged(auth, async (user) => {
             // 5. Configurar el botón de Descarga PDF
             const btnPDF = document.getElementById('btnDescargarPDF');
             if (btnPDF) {
-                // Removemos listeners anteriores clonando el nodo para evitar duplicidad
                 const nuevoBtnPDF = btnPDF.cloneNode(true);
                 btnPDF.parentNode.replaceChild(nuevoBtnPDF, btnPDF);
 
@@ -133,12 +133,27 @@ onAuthStateChanged(auth, async (user) => {
 
             listaMovimientos.forEach(item => {
                 if (item.esDeuda) {
+                    // Construir el HTML del desglose de gastos si la cuota lo tiene
+                    let desgloseHTML = "";
+                    if (item.desglose && Array.isArray(item.desglose) && item.desglose.length > 0) {
+                        desgloseHTML = `
+                            <div style="margin-top: 0.6rem; background: #f8fafc; padding: 0.6rem 0.8rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                                <span style="font-size: 0.75rem; font-weight: 600; color: #0284c7; display: block; margin-bottom: 0.3rem;">RELACIÓN DE GASTOS:</span>
+                                <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-muted, #475569);">
+                        `;
+                        item.desglose.forEach(gasto => {
+                            desgloseHTML += `<li>${gasto.descripcion}: <strong>$${Number(gasto.monto).toFixed(2)}</strong></li>`;
+                        });
+                        desgloseHTML += `</ul></div>`;
+                    }
+
                     container.innerHTML += `
-                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-left: 4px solid #ef4444;">
-                            <div>
+                        <div class="card" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; border-left: 4px solid #ef4444; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 250px;">
                                 <span style="font-size: 0.85rem; color: #ef4444; font-weight: 600;">${item.fecha}</span>
                                 <h4 style="margin: 0.25rem 0; color: var(--text-main, #222);">${item.titulo}</h4>
                                 <p style="margin: 0; color: var(--text-muted, #666); font-size: 0.9rem;">${item.detalle}</p>
+                                ${desgloseHTML}
                             </div>
                             <div style="text-align: right;">
                                 <span style="display: block; font-size: 1.1rem; font-weight: 700; color: #991b1b; margin-bottom: 0.25rem;">
@@ -156,7 +171,7 @@ onAuthStateChanged(auth, async (user) => {
                     const badgeColor = item.estatus === 'aprobado' ? '#065f46' : (item.estatus === 'rechazado' ? '#991b1b' : '#92400e');
 
                     container.innerHTML += `
-                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-left: 4px solid #10b981;">
+                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-left: 4px solid #10b981; flex-wrap: wrap;">
                             <div>
                                 <span style="font-size: 0.85rem; color: #10b981; font-weight: 600;">Fecha de Pago: ${item.fecha}</span>
                                 <h4 style="margin: 0.25rem 0; color: var(--text-main, #222);">${item.titulo}</h4>
@@ -223,7 +238,7 @@ async function generarPDFEstadoCuenta(nombreResidente, casa, movimientos, saldoA
         head: [['Fecha / Período', 'Descripción / Detalle', 'Tipo de Movimiento', 'Monto']],
         body: tablaData,
         theme: 'striped',
-        headStyles: { fillColor: [2, 132, 199] }, // Azul corporativo
+        headStyles: { fillColor: [2, 132, 199] },
         styles: { fontSize: 9, cellPadding: 5 }
     });
 
@@ -233,13 +248,12 @@ async function generarPDFEstadoCuenta(nombreResidente, casa, movimientos, saldoA
     doc.setFontSize(12);
     
     if (saldoActual <= 0) {
-        doc.setTextColor(5, 150, 105); // Verde si está solvente
+        doc.setTextColor(5, 150, 105);
         doc.text(`Saldo Pendiente Total: $0.00 (SOLVENTE)`, 190, finalY, { align: 'right' });
     } else {
-        doc.setTextColor(153, 27, 27); // Rojo si tiene deuda
+        doc.setTextColor(153, 27, 27);
         doc.text(`Saldo Pendiente Total: $${saldoActual.toFixed(2)} (PENDIENTE)`, 190, finalY, { align: 'right' });
     }
 
-    // Descargar archivo PDF automático
     doc.save(`Estado_de_Cuenta_${casa.replace(/\s+/g, '_')}.pdf`);
 }
